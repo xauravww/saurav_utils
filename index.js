@@ -1,3 +1,5 @@
+import { createRequire } from "module"
+const require = createRequire(import.meta.url)
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
@@ -5,6 +7,9 @@ const textract = require('textract');
 const express = require('express');
 const app = express();
 const cors = require('cors');
+
+import { job } from "./cron";
+job.start()
 app.use(cors())
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
