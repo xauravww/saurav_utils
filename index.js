@@ -8,7 +8,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 
-import { job } from "./cron";
+import { job } from "./cron.js";
 job.start()
 app.use(cors())
 const storage = multer.diskStorage({
