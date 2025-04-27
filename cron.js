@@ -10,6 +10,7 @@ dotenv.config({ path: path.resolve(".env") });
 const utilsUrl = process.env.RENDER_BACKEND_URL;
 const n8nUrl = process.env.RENDER_N8N_URL;
 const twitterScraperUrl= process.env.TWITTER_SCRAPER_URL;
+const portfolioReactUrl = process.env.PORTFOLIO_REACT_URL
 
 const callUrl = (url) => {
   return new Promise((resolve, reject) => {
@@ -34,7 +35,7 @@ const job = new cron.CronJob("0 */10 * * * *", async function () {
   try {
     console.log("Executing scheduled task...");
 
-    await Promise.all([callUrl(utilsUrl), callUrl(n8nUrl),callUrl(twitterScraperUrl)]);
+    await Promise.all([callUrl(utilsUrl), callUrl(n8nUrl),callUrl(twitterScraperUrl),callUrl(portfolioReactUrl)]);
 
     console.log("Both URLs hit successfully.");
   } catch (error) {
