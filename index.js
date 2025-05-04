@@ -7,6 +7,7 @@ const textract = require('textract');
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const axios = require('axios'); // Import axios
 
 import { job } from "./cron.js";
 job.start()
@@ -79,8 +80,25 @@ app.post('/extract', upload.single('file'), async (req, res) => {
   }
 });
 
+// Route to fetch and serve data from a URL provided as a query parameter
+app.get('/fetch', async (req, res) => {
+  try {
+    const url = req.query.url; // Get URL from query parameter
+    if (!url) {
+      return res.status(400).json({ success: false, message: 'URL query parameter is required' });
+    }
+    // Use the URL directly without prepending 'https://'
+    const response = await axios.get(url);
+    res.set('Content-Type', 'application/javascript'); // Set appropriate content type
+    res.send(response.data);
+  } catch (error) {
+    console.error('Error fetching URL data:', error);
+    res.status(500).json({ success: false, message: 'Error fetching data from URL' });
+  }
+});
+
 // Start the Express server
-const PORT = process.env.PORT || 3005;
+const PORT = process.env.PORT || 3006;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
